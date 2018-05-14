@@ -1,0 +1,19 @@
+{
+  "name": "node-env-obj",
+  "version": "0.1.0",
+  "description": "Compiles environment vars into a predefined accessible object structure.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "\"Lighten\"",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wearelighten/node-env-obj.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wearelighten/node-env-obj/issues"
+  },
+  "homepage": "https://github.com/wearelighten/node-env-obj#readme"
+}
