@@ -2,7 +2,7 @@
   "name": "node-env-obj",
   "version": "0.1.0",
   "description": "Compiles environment vars into a predefined accessible object structure.",
-  "main": "index.js",
+  "main": "config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
