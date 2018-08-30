@@ -93,8 +93,8 @@ const __parseEnvFile = data => {
  */
 class Config {
   constructor(path) {
-    const basePath = path ? path : __dirname;
-    const envPath = `${basePath}/.${_env}.env`;
+    const basePath = path ? `${process.cwd()}/${path}` : process.cwd();
+    const envPath = `${basePath}.${_env}.env`;
 
     if (fs.existsSync(envPath)) {
       const envFileData = __parseEnvFile(fs.readFileSync(envPath, {encoding: 'utf8'}));
@@ -112,7 +112,7 @@ class Config {
   }
 
   static _loadSettings(env) {
-    let json = fs.readFileSync(`${__dirname}/config.json`);
+    let json = fs.readFileSync(`${process.cwd()}/config.json`);
     let settings = JSON.parse(json);
 
     let variable;
