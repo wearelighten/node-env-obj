@@ -1,0 +1,23 @@
+{
+  "environment": {
+    "NODE_ENV": "development",
+    "EXAMPLE_STRING_ENV": "helloworld",
+    "PROJECT_NAME": "helloworld",
+    "PROJECT_URL": "http://example.com",
+    "PERSON_FIRSTNAME": "Joe",
+    "PERSON_LASTNAME": "Bloggs"
+  },
+  "global": {
+    "env": "%NODE_ENV%",
+    "app": {
+      "title": "%PROJECT_NAME%",
+      "URL": "%PROJECT_URL%",
+      "api": "%PROJECT_URL%/api/v1/"
+    },
+    "person": {
+      "firstname": "%PERSON_FIRSTNAME%",
+      "lastname": "%PERSON_FIRSTNAME%",
+      "fullname": "%PERSON_FIRSTNAME% %PERSON_LASTNAME%"
+    }
+  }
+}
