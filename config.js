@@ -101,6 +101,8 @@ class Config {
       Object.keys(envFileData).forEach(key => {
         process.env[key] = envFileData[key];
       });
+    } else {
+      console.warn(`WARN: Unable to find file ${envPath}`); 
     }
 
     this._settings = Config._loadSettings(process.env);
