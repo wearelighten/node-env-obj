@@ -10,6 +10,7 @@
  *
  */
 
+const path = require('path');
 const fs = require('fs');
 
 /**
@@ -92,18 +93,41 @@ const __parseEnvFile = data => {
  *
  */
 class Config {
-  constructor(path) {
-    const basePath = path ? `${process.cwd()}/${path}` : process.cwd();
-    const envPath = `${basePath}.${_env}.env`;
+  constructor(opts) {
+    if (typeof opts === 'string') {
+      console.warn(`WARN: Breaking change from v0.2.0. Please pass a object instead of a stirng to the first config instance.`);
+    }
 
-    if (fs.existsSync(envPath)) {
-      const envFileData = __parseEnvFile(fs.readFileSync(envPath, {encoding: 'utf8'}));
+    // Merge user options with defaults
+    this._options = {
+      basePath: process.cwd(),
+      envPath: '/',
+      envFile: `.${_env}.env`,
+      configPath: '/',
+      configFile: `config.json`,
+      ...opts
+    };
+
+    // Build our full paths
+    this._options.envFullPath = path.join(this._options.basePath, this._options.envPath, this._options.envFile);
+    this._options.configFullPath = path.join(this._options.basePath, this._options.configPath, this._options.configFile);
+
+    // Remerge out user options again in case they've overwritten the full paths
+    this._options = {
+      ...this._options,
+      ...opts
+    };
+
+    if (fs.existsSync(this._options.envFullPath)) {
+      const envFileData = __parseEnvFile(fs.readFileSync(this._options.envFullPath, {encoding: 'utf8'}));
       Object.keys(envFileData).forEach(key => {
         process.env[key] = envFileData[key];
       });
+    } else {
+      console.warn(`WARN: Unable to find file ${this._options.envFullPath}`);
     }
 
-    this._settings = Config._loadSettings(process.env);
+    this._settings = this._loadSettings(process.env);
     this._settings.env = _map[this._settings.env];
   }
   
@@ -111,9 +135,9 @@ class Config {
     return this._settings;
   }
 
-  static _loadSettings(env) {
-    let json = fs.readFileSync(`${process.cwd()}/config.json`);
-    let settings = JSON.parse(json);
+  _loadSettings(env) {
+    const json = fs.readFileSync(this._options.configFullPath);
+    const settings = JSON.parse(json);
 
     let variable;
     for (variable in settings.environment) {
@@ -135,4 +159,12 @@ class Config {
   }
 }
 
-module.exports = args => new Config(args).settings;
+let _instance = null;
+
+module.exports = (args) => {
+  if (!_instance) {
+    _instance = new Config(args);
+  }
+
+  return _instance.settings;
+};
