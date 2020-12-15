@@ -1,6 +1,6 @@
 {
   "name": "node-env-obj",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Compiles environment vars into a predefined accessible object structure.",
   "main": "config.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "url": "https://github.com/wearelighten/node-env-obj/issues"
   },
   "homepage": "https://github.com/wearelighten/node-env-obj#readme",
-  "engines" : {
+  "engines": {
     "node": ">=10.23.0"
   }
 }
