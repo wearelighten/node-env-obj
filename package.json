@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/wearelighten/node-env-obj/issues"
   },
-  "homepage": "https://github.com/wearelighten/node-env-obj#readme"
+  "homepage": "https://github.com/wearelighten/node-env-obj#readme",
+  "engines" : {
+    "node": ">=10.23.0"
+  }
 }
