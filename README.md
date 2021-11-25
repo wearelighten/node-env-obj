@@ -4,6 +4,9 @@ Compiles environment vars into a predefined object structure.
 # What's New
 
 ## Latest
+
+### 0.2.1
+* TWEAK: basePath config default will now be the directory of the root executing script
 ### 0.2.0
 
 - ADDED: Ability to change the expected config & env file paths
