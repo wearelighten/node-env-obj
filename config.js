@@ -107,6 +107,7 @@ class Config {
       envFile: `.${_env}.env`,
       configPath: '/',
       configFile: `config.json`,
+      verbose: true,
       ...opts
     };
 
@@ -125,8 +126,9 @@ class Config {
       Object.keys(envFileData).forEach(key => {
         process.env[key] = envFileData[key];
       });
-    } else {
-      console.warn(`WARN: Unable to find file ${this._options.envFullPath}`);
+      if (this._options.verbose) {
+        console.info(`node-env-obj: Loaded ${this._options.envFullPath} into environment variables.`);
+      }
     }
 
     this._settings = this._loadSettings(process.env);
@@ -146,7 +148,7 @@ class Config {
       if (!settings.environment.hasOwnProperty(variable)) { // eslint-disable-line no-prototype-builtins
         continue;
       }
-      if (!env[variable] && !settings.environment[variable]) {
+      if (!env[variable] && !settings.environment[variable] && this._options.verbose) {
         console.warn(`WARN: You must specify the ${variable} environment variable`);
       }
       if (env[variable]) {
