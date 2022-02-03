@@ -1,6 +1,6 @@
 {
   "name": "node-env-obj",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Compiles environment vars into a predefined accessible object structure.",
   "main": "config.js",
   "scripts": {
