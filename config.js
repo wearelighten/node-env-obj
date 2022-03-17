@@ -40,15 +40,30 @@ const __recurseVars = (env, root) => {
     if (root[variable] instanceof Object || root[variable] instanceof Array) {
       __recurseVars(env, root[variable]);
     } else if (typeof root[variable] === 'string') {
-      const matches = root[variable].match(_regEx);
-      if (matches) {
-        matches.forEach(match => {
-          const key = match.replace(/%/g, '');
-          root[variable] = root[variable].replace(`%${key}%`, env[key]);
-        });
-      }
+      root[variable] = resolveReferences(root[variable], env);
     }
   }
+};
+
+/**
+ * 
+ * @param {string} target
+ * @param {object} values
+ * @return {string}
+ */
+const resolveReferences = function(target, values) {
+  if (typeof target !== 'string') return target;
+
+  const matches = target.match(_regEx);
+
+  if (matches) {
+    matches.forEach((match) => {
+      const key = match.replace(/%/g, '');
+      if (values[key]) target = target.replace(`%${key}%`, values[key]);
+    });
+  }
+
+  return target;
 };
 
 /**
@@ -148,11 +163,16 @@ class Config {
       if (!settings.environment.hasOwnProperty(variable)) { // eslint-disable-line no-prototype-builtins
         continue;
       }
+
+      // Resolve defaults
+      settings.environment[variable] = resolveReferences(settings.environment[variable], settings.environment);
+      
       if (!env[variable] && !settings.environment[variable] && this._options.verbose) {
         console.warn(`WARN: You must specify the ${variable} environment variable`);
       }
       if (env[variable]) {
-        settings.environment[variable] = env[variable];
+        // Resolve
+        settings.environment[variable] = resolveReferences(env[variable], env);
       }
     }
 
