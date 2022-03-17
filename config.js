@@ -164,15 +164,14 @@ class Config {
         continue;
       }
 
-      // Resolve defaults
-      settings.environment[variable] = resolveReferences(settings.environment[variable], settings.environment);
-      
       if (!env[variable] && !settings.environment[variable] && this._options.verbose) {
         console.warn(`WARN: You must specify the ${variable} environment variable`);
       }
       if (env[variable]) {
         // Resolve
         settings.environment[variable] = resolveReferences(env[variable], env);
+      } else {
+        settings.environment[variable] = resolveReferences(settings.environment[variable], settings.environment);
       }
     }
 
