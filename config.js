@@ -25,8 +25,6 @@ const _map = {
 const _env = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
 const _regEx = /%(\w+)%/g;
 
-const getRootModule = (module) => (module.parent) ? getRootModule(module.parent) : module;
-
 /**
  * @param  {Object} env - environment variables
  * @param  {Object|Array} root - root object
@@ -117,7 +115,7 @@ class Config {
 
     // Merge user options with defaults
     this._options = {
-      basePath: getRootModule(module).path,
+      basePath: path.dirname(require.main.filename),
       envPath: '/',
       envFile: `.${_env}.env`,
       configPath: '/',
@@ -164,15 +162,14 @@ class Config {
         continue;
       }
 
-      // Resolve defaults
-      settings.environment[variable] = resolveReferences(settings.environment[variable], settings.environment);
-      
       if (!env[variable] && !settings.environment[variable] && this._options.verbose) {
         console.warn(`WARN: You must specify the ${variable} environment variable`);
       }
       if (env[variable]) {
         // Resolve
         settings.environment[variable] = resolveReferences(env[variable], env);
+      } else {
+        settings.environment[variable] = resolveReferences(settings.environment[variable], settings.environment);
       }
     }
 
