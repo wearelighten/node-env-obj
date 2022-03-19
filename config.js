@@ -25,8 +25,6 @@ const _map = {
 const _env = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
 const _regEx = /%(\w+)%/g;
 
-const getRootModule = (module) => (module.parent) ? getRootModule(module.parent) : module;
-
 /**
  * @param  {Object} env - environment variables
  * @param  {Object|Array} root - root object
@@ -117,7 +115,7 @@ class Config {
 
     // Merge user options with defaults
     this._options = {
-      basePath: getRootModule(module).path,
+      basePath: path.dirname(require.main.filename),
       envPath: '/',
       envFile: `.${_env}.env`,
       configPath: '/',
